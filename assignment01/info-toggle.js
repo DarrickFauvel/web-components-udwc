@@ -10,31 +10,35 @@ template.innerHTML = `
 `
 
 class InfoToggle extends HTMLElement {
+  #infoBox
+  #button
+  #isVisible
+
   constructor() {
     super()
     this.attachShadow({ mode: "open" })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
-    this._infoBox = this.shadowRoot.querySelector("#info-box")
-    this._button = this.shadowRoot.querySelector("button")
+    this.#infoBox = this.shadowRoot.querySelector("#info-box")
+    this.#button = this.shadowRoot.querySelector("button")
 
-    this._button.addEventListener("click", this._toggleInfo.bind(this))
+    this.#button.addEventListener("click", this._toggleInfo.bind(this))
 
-    this._isVisible = true
+    this.#isVisible = false
   }
 
   connectedCallback() {
     if (this.getAttribute("is-visible") === "true") {
-      this._isVisible = !this._isVisible
-      this._button.textContent = "Hide"
-      this._infoBox.style.display = "block"
+      this.#isVisible = !this.#isVisible
+      this.#button.textContent = "Hide"
+      this.#infoBox.style.display = "block"
     }
   }
 
   _toggleInfo() {
-    this._infoBox.style.display = this._isVisible ? "block" : "none"
-    this._button.textContent = this._isVisible ? "Hide" : "Show"
-    this._isVisible = !this._isVisible
+    this.#infoBox.style.display = this.#isVisible ? "none" : "block"
+    this.#button.textContent = this.#isVisible ? "Show" : "Hide"
+    this.#isVisible = !this.#isVisible
   }
 }
 
